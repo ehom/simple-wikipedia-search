@@ -1,8 +1,7 @@
 "use strict";
 
 var TopicCard = function TopicCard(props) {
-  var key = props.key,
-    id = props.id,
+  var id = props.id,
     title = props.title,
     desc = props.desc,
     extract = props.extract,

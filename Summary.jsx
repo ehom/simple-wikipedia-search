@@ -6,7 +6,6 @@ const Summary = ({ pages }) => {
         console.debug("value:", key, value);
         return (
           <TopicCard
-            key={value.pageid}
             id={value.pageid}
             title={value.title}
             desc={value.description}

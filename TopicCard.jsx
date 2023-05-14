@@ -1,5 +1,5 @@
 const TopicCard = (props) => {
-    const { key, id, title, desc, extract, image } = props;
+    const { id, title, desc, extract, image } = props;
   
     const url = `https://en.wikipedia.org/?curid=${id}`;
   

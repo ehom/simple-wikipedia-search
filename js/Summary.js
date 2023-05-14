@@ -18,7 +18,6 @@ var Summary = function Summary(_ref) {
         value = _ref3[1];
       console.debug("value:", key, value);
       return /*#__PURE__*/React.createElement(TopicCard, {
-        key: value.pageid,
         id: value.pageid,
         title: value.title,
         desc: value.description,

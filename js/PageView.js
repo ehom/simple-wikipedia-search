@@ -23,10 +23,6 @@ var PageView = /*#__PURE__*/function (_React$Component) {
       onSearchRequest = _ref.onSearchRequest;
     _classCallCheck(this, PageView);
     _this = _super.call(this);
-    _defineProperty(_assertThisInitialized(_this), "handleButtonClick", function () {
-      console.debug("handleClick");
-      _this.onRandomPage();
-    });
     _defineProperty(_assertThisInitialized(_this), "isEnterKey", function (e) {
       return e.keyCode === keyCodes.ENTER;
     });
@@ -57,6 +53,13 @@ var PageView = /*#__PURE__*/function (_React$Component) {
     _this.onSearchRequest = onSearchRequest;
     return _this;
   }
+
+  /*
+  handleButtonClick = () => {
+    console.debug("handleClick");
+    this.onRandomPage();
+  };
+  */
   _createClass(PageView, [{
     key: "clearSearchInputField",
     value: function clearSearchInputField() {

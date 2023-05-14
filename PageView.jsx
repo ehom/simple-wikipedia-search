@@ -10,10 +10,12 @@ class PageView extends React.Component {
       this.onSearchRequest = onSearchRequest;
     }
   
+    /*
     handleButtonClick = () => {
       console.debug("handleClick");
       this.onRandomPage();
     };
+    */
   
     clearSearchInputField() {
       const searchInput = document.getElementById("searchinput");

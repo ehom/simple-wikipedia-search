@@ -1,3 +1,6 @@
+// todo: get this from remote source, 
+// decooupled from the application
+
 const topics = [
   "Fermi Paradox",
   "Byzantine Empire",
@@ -18,7 +21,8 @@ const topics = [
   "Temporal paradoxes",
   "Stonehenge",
   "Cleopatra",
-  "Kowloon Walled City"
+  "Kowloon Walled City",
+  "Woz"
 ];
 
 const App = () => {

@@ -1,3 +1,26 @@
+const topics = [
+  "Fermi Paradox",
+  "Byzantine Empire",
+  "Cognitive Bias",
+  "Ancient Egypt",
+  "Game Theory",
+  "Linguistics",
+  "Dark Matter",
+  "Renaissance",
+  "Evolutionary Psychology",
+  "World War II",
+  "Artificial Intelligence",
+  "Climate Change",
+  "Psychology",
+  "Cryptography",
+  "Human migration",
+  "Great Emu War",
+  "Temporal paradoxes",
+  "Stonehenge",
+  "Cleopatra",
+  "Kowloon Walled City"
+];
+
 const App = () => {
     const model = new AppModel();
     const [pages, setPages] = React.useState({});
@@ -19,6 +42,7 @@ const App = () => {
       <div>
         <PageView
           dataModel={pages}
+          topics={topics}
           onSearchRequest={(text) => handleSearchRequest(model, setPages, text)}
           onRandomPage={() => handleRandomPageRequest(model, setPages)}
         />

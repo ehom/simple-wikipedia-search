@@ -22,7 +22,8 @@ const topics = [
   "Stonehenge",
   "Cleopatra",
   "Kowloon Walled City",
-  "Woz"
+  "Woz",
+  "\u{1F5FF}"
 ];
 
 const App = () => {

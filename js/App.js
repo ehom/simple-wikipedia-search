@@ -9,7 +9,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 // todo: get this from remote source, 
 // decooupled from the application
 
-var topics = ["Fermi Paradox", "Byzantine Empire", "Cognitive Bias", "Ancient Egypt", "Game Theory", "Linguistics", "Dark Matter", "Renaissance", "Evolutionary Psychology", "World War II", "Artificial Intelligence", "Climate Change", "Psychology", "Cryptography", "Human migration", "Great Emu War", "Temporal paradoxes", "Stonehenge", "Cleopatra", "Kowloon Walled City", "Woz"];
+var topics = ["Fermi Paradox", "Byzantine Empire", "Cognitive Bias", "Ancient Egypt", "Game Theory", "Linguistics", "Dark Matter", "Renaissance", "Evolutionary Psychology", "World War II", "Artificial Intelligence", "Climate Change", "Psychology", "Cryptography", "Human migration", "Great Emu War", "Temporal paradoxes", "Stonehenge", "Cleopatra", "Kowloon Walled City", "Woz", "\uD83D\uDDFF"];
 var App = function App() {
   var model = new AppModel();
   var _React$useState = React.useState({}),

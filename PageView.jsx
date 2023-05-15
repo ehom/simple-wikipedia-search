@@ -2,28 +2,43 @@
 
 const Emojis = {
   RED_QUESTION_MARK: "\u2753",
-  REPEATABLE: "\u{1F504}"
+  REPEATABLE: "\u{1F504}",
+  MAGNIFYING_GLASS: "\u{1F50D}"
 };
 
-const fisherYates = (list) => {
-  for (let i = list.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * i);
-    let k = list[i];
-    list[i] = list[j];
-    list[j] = k;
+const fisherYates = (array) => {
+  const swapElementsAt = (i, j) => {
+    const k = array[i];
+    array[i] = array[j];
+    array[j] = k;
+  };
+
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = getRandomNumber(i);
+    swapElementsAt(i, j);
   }
+  return array;
 };
 
-function shuffle(array) {
-  const shuffleImpl = fisherYates;
-  shuffleImpl(array);
-}
+const getRandomNumber = (maximum) => Math.floor(Math.random() * maximum);
 
+const shuffle = (array) => {
+  const shuffleImplementation = fisherYates;
+  shuffleImplementation(array);
+  return array;
+};
 
 class PageView extends React.Component {
-  constructor({ dataModel, topics, onSearchRequest, onRandomPage }) {
-    super();
+  static defaultProps = {
+    dataModel: [],
+    topics: [],
+    onSearchRequest: () => { },
+    onRandomPage: () => { }
+  };
 
+  constructor(props) {
+    super(props);
+    const { dataModel, topics, onSearchRequest, onRandomPage } = props;
     this.state = {
       searchText: "",
       topics: [],
@@ -37,16 +52,16 @@ class PageView extends React.Component {
     this.scrambleTopics();
   }
 
-  scrambleTopics() {
+  scrambleTopics = () => {
     shuffle(this.props.topics);
-    let currentTopics = this.props.topics.slice(10);
+    const currentTopics = this.props.topics.slice(10);
 
     this.setState({
       topics: currentTopics
     });
   }
 
-  clearSearchInputField() {
+  clearSearchInputField = () => {
     const searchInput = document.getElementById("searchinput");
     searchInput.blur();
   }
@@ -85,7 +100,7 @@ class PageView extends React.Component {
     console.debug("topic button:", e.target.name);
     const topic = e.target.name;
     this.props.onSearchRequest(topic);
-    
+
     this.setState({
       searchText: ""
     });
@@ -96,25 +111,19 @@ class PageView extends React.Component {
   }
 
   render() {
-    console.debug("app view ... render pages", this.state.pages);
+    const { dataModel, onRandomPage } = this.props;
+    const { searchText, pages } = this.state;
 
-    const buttons = this.state.topics.map((topic) => {
-      return (
-        <button
-          type="button"
-          className="btn btn-light m-1"
-          onClick={this.handleTopicButtons}
-          name={topic}
-        >
-          {topic}
-        </button>
-      );
-    });
+    console.debug("app view ... render pages", pages);
+
+    const buttons = this.state.topics.map((topic, index) =>
+      <TopicButton key={index} name={topic} onClick={this.handleTopicButtons} />
+    );
 
     return (
       <div className="container mt-5 mb-5">
         <div className="text-center mb-4">
-          <h2 className="header-text-color">{"Simple Wikipedia Search \u{1F50D}"}</h2>
+          <h2 className="header-text-color">{`Simple Wikipedia Search ${Emojis.MAGNIFYING_GLASS}`}</h2>
         </div>
 
         <div className="mb-3">
@@ -122,32 +131,32 @@ class PageView extends React.Component {
             className="form-control"
             id="searchinput"
             type="search"
-            autocomplete="on"
-            value={this.state.searchText}
+            autoComplete="on"
+            value={searchText}
             placeholder="Enter a topic and then type [return]"
             onKeyDown={this.handleEnterKey}
             onChange={this.handleChangeInSearchInput}
           />
         </div>
         <div id="message" className="mb-4 text-white">
-          <button
-          type="button"
-          className="btn btn-light m-1"
-          onClick={this.handleRefreshTopics}
-          name={Emojis.REPEATABLE}
-          >{Emojis.REPEATABLE}</button>
+          <TopicButton name={Emojis.REPEATABLE} onClick={this.handleRefreshTopics} />
           {buttons}
-          <button
-          type="button"
-          className="btn btn-light m-1"
-          onClick={this.props.onRandomPage}
-          name={Emojis.RED_QUESTION_MARK}
-          >{Emojis.RED_QUESTION_MARK}</button>
+          <TopicButton name={Emojis.RED_QUESTION_MARK} onClick={onRandomPage} />
         </div>
         <div id="results">
-          <Summary pages={this.props.dataModel} />
+          <Summary pages={dataModel} />
         </div>
       </div>
     );
   }
 }
+
+// Private to this component
+const TopicButton = ({ name, onClick }) => {
+  return <button
+    type="button"
+    className="btn btn-light m-1"
+    onClick={onClick}
+    name={name}
+  >{name}</button>;
+};

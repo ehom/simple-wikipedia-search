@@ -13,11 +13,15 @@ input {
 }
 
 div.card:hover {
-  border-left-width: 3px;
+  border-left-width: 5px;
   border-left-color: CornFlowerBlue;
   transition: .5s;
 }
 
 div.card {
   border-left-width: 3px;
+}
+
+.header-text-color {
+  color: Bisque;
 }

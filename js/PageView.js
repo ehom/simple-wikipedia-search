@@ -14,13 +14,33 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+// Unicode Emojis
+
+var Emojis = {
+  RED_QUESTION_MARK: "\u2753",
+  REPEATABLE: "\uD83D\uDD04"
+};
+var fisherYates = function fisherYates(list) {
+  for (var i = list.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * i);
+    var k = list[i];
+    list[i] = list[j];
+    list[j] = k;
+  }
+};
+function shuffle(array) {
+  var shuffleImpl = fisherYates;
+  shuffleImpl(array);
+}
 var PageView = /*#__PURE__*/function (_React$Component) {
   _inherits(PageView, _React$Component);
   var _super = _createSuper(PageView);
   function PageView(_ref) {
     var _this;
     var dataModel = _ref.dataModel,
-      onSearchRequest = _ref.onSearchRequest;
+      topics = _ref.topics,
+      onSearchRequest = _ref.onSearchRequest,
+      onRandomPage = _ref.onRandomPage;
     _classCallCheck(this, PageView);
     _this = _super.call(this);
     _defineProperty(_assertThisInitialized(_this), "isEnterKey", function (e) {
@@ -34,7 +54,7 @@ var PageView = /*#__PURE__*/function (_React$Component) {
         console.debug("value:", _this.state.searchText);
         _this.clearSearchInputField();
         console.debug("clear results view");
-        _this.onSearchRequest(_this.state.searchText);
+        _this.props.onSearchRequest(_this.state.searchText);
         _this.setState({
           searchText: ""
         });
@@ -46,21 +66,40 @@ var PageView = /*#__PURE__*/function (_React$Component) {
         searchText: e.target.value
       });
     });
+    _defineProperty(_assertThisInitialized(_this), "handleTopicButtons", function (e) {
+      console.debug("topic button:", e.target.name);
+      var topic = e.target.name;
+      _this.props.onSearchRequest(topic);
+      _this.setState({
+        searchText: ""
+      });
+    });
+    _defineProperty(_assertThisInitialized(_this), "handleRefreshTopics", function (e) {
+      _this.scrambleTopics();
+    });
     _this.state = {
       searchText: "",
+      topics: [],
       pages: dataModel
     };
-    _this.onSearchRequest = onSearchRequest;
     return _this;
   }
-
-  /*
-  handleButtonClick = () => {
-    console.debug("handleClick");
-    this.onRandomPage();
-  };
-  */
   _createClass(PageView, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      console.debug("componentDidMount();");
+      this.scrambleTopics();
+    }
+  }, {
+    key: "scrambleTopics",
+    value: function scrambleTopics() {
+      shuffle(this.props.topics);
+      var currentTopics = this.props.topics.slice(10);
+      this.setState({
+        topics: currentTopics
+      });
+    }
+  }, {
     key: "clearSearchInputField",
     value: function clearSearchInputField() {
       var searchInput = document.getElementById("searchinput");
@@ -69,36 +108,47 @@ var PageView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
       console.debug("app view ... render pages", this.state.pages);
+      var buttons = this.state.topics.map(function (topic) {
+        return /*#__PURE__*/React.createElement("button", {
+          type: "button",
+          className: "btn btn-light m-1",
+          onClick: _this2.handleTopicButtons,
+          name: topic
+        }, topic);
+      });
       return /*#__PURE__*/React.createElement("div", {
         className: "container mt-5 mb-5"
       }, /*#__PURE__*/React.createElement("div", {
         className: "text-center mb-4"
       }, /*#__PURE__*/React.createElement("h2", {
-        className: "text-white"
-      }, "Simple Wikipedia Search"), /*#__PURE__*/React.createElement("p", {
-        className: "text-white"
-      }, "cLicK ", /*#__PURE__*/React.createElement("a", {
-        href: "https://en.wikipedia.org/wiki/Special:Random",
-        target: "_blank"
-      }, "hErE"), " foR a RaNdOm pAgE \uD83D\uDE2E"), /*#__PURE__*/React.createElement(RandomPageButton, {
-        label: "RaNdOm pAgE",
-        onClick: this.props.onRandomPage
-      })), /*#__PURE__*/React.createElement("div", {
+        className: "header-text-color"
+      }, "Simple Wikipedia Search \uD83D\uDD0D")), /*#__PURE__*/React.createElement("div", {
         className: "mb-3"
       }, /*#__PURE__*/React.createElement("input", {
         className: "form-control",
         id: "searchinput",
         type: "search",
-        autoComplete: "on",
+        autocomplete: "on",
         value: this.state.searchText,
-        placeholder: "I'm looking for ...",
+        placeholder: "Enter a topic and then type [return]",
         onKeyDown: this.handleEnterKey,
         onChange: this.handleChangeInSearchInput
       })), /*#__PURE__*/React.createElement("div", {
         id: "message",
         className: "mb-4 text-white"
-      }), /*#__PURE__*/React.createElement("div", {
+      }, /*#__PURE__*/React.createElement("button", {
+        type: "button",
+        className: "btn btn-light m-1",
+        onClick: this.handleRefreshTopics,
+        name: Emojis.REPEATABLE
+      }, Emojis.REPEATABLE), buttons, /*#__PURE__*/React.createElement("button", {
+        type: "button",
+        className: "btn btn-light m-1",
+        onClick: this.props.onRandomPage,
+        name: Emojis.RED_QUESTION_MARK
+      }, Emojis.RED_QUESTION_MARK)), /*#__PURE__*/React.createElement("div", {
         id: "results"
       }, /*#__PURE__*/React.createElement(Summary, {
         pages: this.props.dataModel

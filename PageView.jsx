@@ -42,7 +42,6 @@ class PageView extends React.Component {
     this.state = {
       searchText: "",
       topics: [],
-      pages: dataModel
     };
   }
 
@@ -54,17 +53,17 @@ class PageView extends React.Component {
 
   scrambleTopics = () => {
     shuffle(this.props.topics);
-    const currentTopics = this.props.topics.slice(10);
+    const currentTopics = this.props.topics.slice(0, 10);
 
     this.setState({
       topics: currentTopics
     });
-  }
+  };
 
   clearSearchInputField = () => {
     const searchInput = document.getElementById("searchinput");
     searchInput.blur();
-  }
+  };
 
   handleChangeInSearchInput = (e) => {
     console.debug("handleChangeInSearchInput:", e);
@@ -85,30 +84,30 @@ class PageView extends React.Component {
 
   handleRefreshTopics = (e) => {
     this.scrambleTopics();
-  }
+  };
 
   handleSubmit = (e) => {
     // Prevent default form submission behavior
     e.preventDefault();
 
-    const {searchText} = this.state;
-    const {onSearchRequest} = this.props;
+    const { searchText } = this.state;
+    const { onSearchRequest } = this.props;
 
     console.debug("handleSubmit: ", e);
     console.debug("submitting search text:", searchText);
-    
+
     searchText.length && onSearchRequest(searchText);
 
     this.setState({
       searchText: ""
     });
-  }
+  };
 
   render() {
     const { dataModel, onRandomPage } = this.props;
-    const { searchText, pages } = this.state;
+    const { searchText } = this.state;
 
-    console.debug("app view ... render pages", pages);
+    console.debug("app view ... render pages", dataModel);
 
     const buttons = this.state.topics.map((topic, index) =>
       <TopicButton key={index} name={topic} onClick={this.handleTopicButtons} />
@@ -128,56 +127,9 @@ class PageView extends React.Component {
           <TopicButton name={Emojis.RED_QUESTION_MARK} onClick={onRandomPage} />
         </div>
         <div id="results">
-          <Summary pages={dataModel} />
+          <Summary pages={this.props.dataModel} />
         </div>
       </div>
     );
   }
 }
-
-// Private to this component
-const TopicButton = ({ name, onClick }) => {
-  return <button
-    type="button"
-    className="btn btn-light m-1"
-    onClick={onClick}
-    name={name}
-  >{name}</button>;
-};
-
-const SearchInputForm = (props) => {
-  const { searchText, onKeyDown, onChange, onSubmit } = props;
-  console.debug("SearchInputForm");
-
-  let [length, setLength] = React.useState(searchText.length);
-
-  const handleChange = (e) => {
-    console.debug("handle change:", e.target.value);
-    const inputLength = e.target.value.length;
-
-    setLength(inputLength);
-    onChange(e);
-  };
-
-  return (
-    <form onSubmit={onSubmit}>
-      <div className="row mb-3">
-        <div className="col-md-10">
-          <input
-            className="form-control"
-            id="searchinput"
-            type="search"
-            autoComplete="on"
-            value={searchText}
-            placeholder={`Enter a topic and then click ${Emojis.MAGNIFYING_GLASS}`}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="col-md-2">
-          {length <= 0 ? (<button id="submitButton" className="btn btn-primary" type="submit" disabled>{Emojis.MAGNIFYING_GLASS}</button>) :
-            (<button id="submitButton" className="btn btn-primary" type="submit">{Emojis.MAGNIFYING_GLASS}</button>)}
-
-        </div>
-      </div>
-    </form>);
-};

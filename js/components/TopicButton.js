@@ -5,7 +5,7 @@ var TopicButton = function TopicButton(_ref) {
     onClick = _ref.onClick;
   return /*#__PURE__*/React.createElement("button", {
     type: "button",
-    className: "btn btn-light m-1",
+    className: "btn btn-sm btn-light m-1",
     onClick: onClick,
     name: name
   }, name);

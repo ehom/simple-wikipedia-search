@@ -166,4 +166,3 @@ _defineProperty(PageView, "defaultProps", {
   onSearchRequest: function onSearchRequest() {},
   onRandomPage: function onRandomPage() {}
 });
-;

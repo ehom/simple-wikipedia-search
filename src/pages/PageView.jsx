@@ -1,5 +1,3 @@
-// Unicode Emojis
-
 const Emojis = {
   RED_QUESTION_MARK: "\u2753",
   REPEATABLE: "\u{1F504}",
@@ -47,7 +45,6 @@ class PageView extends React.Component {
 
   componentDidMount() {
     console.debug("componentDidMount();");
-
     this.scrambleTopics();
   }
 

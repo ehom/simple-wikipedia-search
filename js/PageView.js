@@ -56,7 +56,7 @@ var PageView = /*#__PURE__*/function (_React$Component) {
     _this = _super.call(this, props);
     _defineProperty(_assertThisInitialized(_this), "scrambleTopics", function () {
       shuffle(_this.props.topics);
-      var currentTopics = _this.props.topics.slice(10);
+      var currentTopics = _this.props.topics.slice(0, 10);
       _this.setState({
         topics: currentTopics
       });
@@ -65,25 +65,7 @@ var PageView = /*#__PURE__*/function (_React$Component) {
       var searchInput = document.getElementById("searchinput");
       searchInput.blur();
     });
-    /*
-    isEnterKey = (e) => {
-      return e.keyCode === keyCodes.ENTER;
-    };
-     handleEnterKey = (e) => {
-      console.debug("onKeyDown:", e);
-      const searchInput = document.getElementById("searchinput");
-       if (this.isEnterKey(e)) {
-        console.debug("Enter Key:", e);
-        console.debug("value:", this.state.searchText);
-         this.clearSearchInputField();
-         console.debug("clear results view");
-         this.props.onSearchRequest(this.state.searchText);
-        this.setState({
-          searchText: ""
-        });
-      }
-    };
-    */
+
     _defineProperty(_assertThisInitialized(_this), "handleChangeInSearchInput", function (e) {
       console.debug("handleChangeInSearchInput:", e);
       _this.setState({
@@ -119,8 +101,7 @@ var PageView = /*#__PURE__*/function (_React$Component) {
       onRandomPage = props.onRandomPage;
     _this.state = {
       searchText: "",
-      topics: [],
-      pages: dataModel
+      topics: []
     };
     return _this;
   }
@@ -137,10 +118,8 @@ var PageView = /*#__PURE__*/function (_React$Component) {
       var _this$props = this.props,
         dataModel = _this$props.dataModel,
         onRandomPage = _this$props.onRandomPage;
-      var _this$state = this.state,
-        searchText = _this$state.searchText,
-        pages = _this$state.pages;
-      console.debug("app view ... render pages", pages);
+      var searchText = this.state.searchText;
+      console.debug("app view ... render pages", dataModel);
       var buttons = this.state.topics.map(function (topic, index) {
         return /*#__PURE__*/React.createElement(TopicButton, {
           key: index,
@@ -170,68 +149,15 @@ var PageView = /*#__PURE__*/function (_React$Component) {
       })), /*#__PURE__*/React.createElement("div", {
         id: "results"
       }, /*#__PURE__*/React.createElement(Summary, {
-        pages: dataModel
+        pages: this.props.dataModel
       })));
     }
   }]);
   return PageView;
-}(React.Component); // Private to this component
+}(React.Component);
 _defineProperty(PageView, "defaultProps", {
   dataModel: [],
   topics: [],
   onSearchRequest: function onSearchRequest() {},
   onRandomPage: function onRandomPage() {}
 });
-var TopicButton = function TopicButton(_ref) {
-  var name = _ref.name,
-    onClick = _ref.onClick;
-  return /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    className: "btn btn-light m-1",
-    onClick: onClick,
-    name: name
-  }, name);
-};
-var SearchInputForm = function SearchInputForm(props) {
-  var searchText = props.searchText,
-    onKeyDown = props.onKeyDown,
-    onChange = props.onChange,
-    onSubmit = props.onSubmit;
-  console.debug("SearchInputForm");
-  var _React$useState = React.useState(searchText.length),
-    _React$useState2 = _slicedToArray(_React$useState, 2),
-    length = _React$useState2[0],
-    setLength = _React$useState2[1];
-  var handleChange = function handleChange(e) {
-    console.debug("handle change:", e.target.value);
-    var inputLength = e.target.value.length;
-    setLength(inputLength);
-    onChange(e);
-  };
-  return /*#__PURE__*/React.createElement("form", {
-    onSubmit: onSubmit
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "row mb-3"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "col-md-10"
-  }, /*#__PURE__*/React.createElement("input", {
-    className: "form-control",
-    id: "searchinput",
-    type: "search",
-    autoComplete: "on",
-    value: searchText,
-    placeholder: "Enter a topic and then click ".concat(Emojis.MAGNIFYING_GLASS),
-    onChange: handleChange
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "col-md-2"
-  }, length <= 0 ? /*#__PURE__*/React.createElement("button", {
-    id: "submitButton",
-    className: "btn btn-primary",
-    type: "submit",
-    disabled: true
-  }, Emojis.MAGNIFYING_GLASS) : /*#__PURE__*/React.createElement("button", {
-    id: "submitButton",
-    className: "btn btn-primary",
-    type: "submit"
-  }, Emojis.MAGNIFYING_GLASS))));
-};

@@ -66,31 +66,6 @@ class PageView extends React.Component {
     searchInput.blur();
   }
 
-  /*
-  isEnterKey = (e) => {
-    return e.keyCode === keyCodes.ENTER;
-  };
-
-  handleEnterKey = (e) => {
-    console.debug("onKeyDown:", e);
-    const searchInput = document.getElementById("searchinput");
-
-    if (this.isEnterKey(e)) {
-      console.debug("Enter Key:", e);
-      console.debug("value:", this.state.searchText);
-
-      this.clearSearchInputField();
-
-      console.debug("clear results view");
-
-      this.props.onSearchRequest(this.state.searchText);
-      this.setState({
-        searchText: ""
-      });
-    }
-  };
-  */
-
   handleChangeInSearchInput = (e) => {
     console.debug("handleChangeInSearchInput:", e);
     this.setState({

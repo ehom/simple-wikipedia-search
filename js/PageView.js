@@ -65,25 +65,6 @@ var PageView = /*#__PURE__*/function (_React$Component) {
       var searchInput = document.getElementById("searchinput");
       searchInput.blur();
     });
-    /*
-    isEnterKey = (e) => {
-      return e.keyCode === keyCodes.ENTER;
-    };
-     handleEnterKey = (e) => {
-      console.debug("onKeyDown:", e);
-      const searchInput = document.getElementById("searchinput");
-       if (this.isEnterKey(e)) {
-        console.debug("Enter Key:", e);
-        console.debug("value:", this.state.searchText);
-         this.clearSearchInputField();
-         console.debug("clear results view");
-         this.props.onSearchRequest(this.state.searchText);
-        this.setState({
-          searchText: ""
-        });
-      }
-    };
-    */
     _defineProperty(_assertThisInitialized(_this), "handleChangeInSearchInput", function (e) {
       console.debug("handleChangeInSearchInput:", e);
       _this.setState({

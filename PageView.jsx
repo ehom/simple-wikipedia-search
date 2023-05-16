@@ -66,6 +66,7 @@ class PageView extends React.Component {
     searchInput.blur();
   }
 
+  /*
   isEnterKey = (e) => {
     return e.keyCode === keyCodes.ENTER;
   };
@@ -85,9 +86,10 @@ class PageView extends React.Component {
       this.props.onSearchRequest(this.state.searchText);
       this.setState({
         searchText: ""
-      })
+      });
     }
   };
+  */
 
   handleChangeInSearchInput = (e) => {
     console.debug("handleChangeInSearchInput:", e);
@@ -110,6 +112,23 @@ class PageView extends React.Component {
     this.scrambleTopics();
   }
 
+  handleSubmit = (e) => {
+    // Prevent default form submission behavior
+    e.preventDefault();
+
+    const {searchText} = this.state;
+    const {onSearchRequest} = this.props;
+
+    console.debug("handleSubmit: ", e);
+    console.debug("submitting search text:", searchText);
+    
+    searchText.length && onSearchRequest(searchText);
+
+    this.setState({
+      searchText: ""
+    });
+  }
+
   render() {
     const { dataModel, onRandomPage } = this.props;
     const { searchText, pages } = this.state;
@@ -126,18 +145,8 @@ class PageView extends React.Component {
           <h2 className="header-text-color">{`Simple Wikipedia Search ${Emojis.MAGNIFYING_GLASS}`}</h2>
         </div>
 
-        <div className="mb-3">
-          <input
-            className="form-control"
-            id="searchinput"
-            type="search"
-            autoComplete="on"
-            value={searchText}
-            placeholder="Enter a topic and then type [return]"
-            onKeyDown={this.handleEnterKey}
-            onChange={this.handleChangeInSearchInput}
-          />
-        </div>
+        <SearchInputForm searchText={searchText} onSubmit={this.handleSubmit} onChange={this.handleChangeInSearchInput} />
+
         <div id="message" className="mb-4 text-white">
           <TopicButton name={Emojis.REPEATABLE} onClick={this.handleRefreshTopics} />
           {buttons}
@@ -159,4 +168,41 @@ const TopicButton = ({ name, onClick }) => {
     onClick={onClick}
     name={name}
   >{name}</button>;
+};
+
+const SearchInputForm = (props) => {
+  const { searchText, onKeyDown, onChange, onSubmit } = props;
+  console.debug("SearchInputForm");
+
+  let [length, setLength] = React.useState(searchText.length);
+
+  const handleChange = (e) => {
+    console.debug("handle change:", e.target.value);
+    const inputLength = e.target.value.length;
+
+    setLength(inputLength);
+    onChange(e);
+  };
+
+  return (
+    <form onSubmit={onSubmit}>
+      <div className="row mb-3">
+        <div className="col-md-10">
+          <input
+            className="form-control"
+            id="searchinput"
+            type="search"
+            autoComplete="on"
+            value={searchText}
+            placeholder={`Enter a topic and then click ${Emojis.MAGNIFYING_GLASS}`}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="col-md-2">
+          {length <= 0 ? (<button id="submitButton" className="btn btn-primary" type="submit" disabled>{Emojis.MAGNIFYING_GLASS}</button>) :
+            (<button id="submitButton" className="btn btn-primary" type="submit">{Emojis.MAGNIFYING_GLASS}</button>)}
+
+        </div>
+      </div>
+    </form>);
 };

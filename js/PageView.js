@@ -1,6 +1,12 @@
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
@@ -59,23 +65,25 @@ var PageView = /*#__PURE__*/function (_React$Component) {
       var searchInput = document.getElementById("searchinput");
       searchInput.blur();
     });
-    _defineProperty(_assertThisInitialized(_this), "isEnterKey", function (e) {
+    /*
+    isEnterKey = (e) => {
       return e.keyCode === keyCodes.ENTER;
-    });
-    _defineProperty(_assertThisInitialized(_this), "handleEnterKey", function (e) {
+    };
+     handleEnterKey = (e) => {
       console.debug("onKeyDown:", e);
-      var searchInput = document.getElementById("searchinput");
-      if (_this.isEnterKey(e)) {
+      const searchInput = document.getElementById("searchinput");
+       if (this.isEnterKey(e)) {
         console.debug("Enter Key:", e);
-        console.debug("value:", _this.state.searchText);
-        _this.clearSearchInputField();
-        console.debug("clear results view");
-        _this.props.onSearchRequest(_this.state.searchText);
-        _this.setState({
+        console.debug("value:", this.state.searchText);
+         this.clearSearchInputField();
+         console.debug("clear results view");
+         this.props.onSearchRequest(this.state.searchText);
+        this.setState({
           searchText: ""
         });
       }
-    });
+    };
+    */
     _defineProperty(_assertThisInitialized(_this), "handleChangeInSearchInput", function (e) {
       console.debug("handleChangeInSearchInput:", e);
       _this.setState({
@@ -93,9 +101,21 @@ var PageView = /*#__PURE__*/function (_React$Component) {
     _defineProperty(_assertThisInitialized(_this), "handleRefreshTopics", function (e) {
       _this.scrambleTopics();
     });
+    _defineProperty(_assertThisInitialized(_this), "handleSubmit", function (e) {
+      // Prevent default form submission behavior
+      e.preventDefault();
+      var searchText = _this.state.searchText;
+      var onSearchRequest = _this.props.onSearchRequest;
+      console.debug("handleSubmit: ", e);
+      console.debug("submitting search text:", searchText);
+      searchText.length && onSearchRequest(searchText);
+      _this.setState({
+        searchText: ""
+      });
+    });
     var dataModel = props.dataModel,
       topics = props.topics,
-      onSearchRequest = props.onSearchRequest,
+      _onSearchRequest = props.onSearchRequest,
       onRandomPage = props.onRandomPage;
     _this.state = {
       searchText: "",
@@ -134,18 +154,11 @@ var PageView = /*#__PURE__*/function (_React$Component) {
         className: "text-center mb-4"
       }, /*#__PURE__*/React.createElement("h2", {
         className: "header-text-color"
-      }, "Simple Wikipedia Search ".concat(Emojis.MAGNIFYING_GLASS))), /*#__PURE__*/React.createElement("div", {
-        className: "mb-3"
-      }, /*#__PURE__*/React.createElement("input", {
-        className: "form-control",
-        id: "searchinput",
-        type: "search",
-        autoComplete: "on",
-        value: searchText,
-        placeholder: "Enter a topic and then type [return]",
-        onKeyDown: this.handleEnterKey,
+      }, "Simple Wikipedia Search ".concat(Emojis.MAGNIFYING_GLASS))), /*#__PURE__*/React.createElement(SearchInputForm, {
+        searchText: searchText,
+        onSubmit: this.handleSubmit,
         onChange: this.handleChangeInSearchInput
-      })), /*#__PURE__*/React.createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
         id: "message",
         className: "mb-4 text-white"
       }, /*#__PURE__*/React.createElement(TopicButton, {
@@ -178,4 +191,47 @@ var TopicButton = function TopicButton(_ref) {
     onClick: onClick,
     name: name
   }, name);
+};
+var SearchInputForm = function SearchInputForm(props) {
+  var searchText = props.searchText,
+    onKeyDown = props.onKeyDown,
+    onChange = props.onChange,
+    onSubmit = props.onSubmit;
+  console.debug("SearchInputForm");
+  var _React$useState = React.useState(searchText.length),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    length = _React$useState2[0],
+    setLength = _React$useState2[1];
+  var handleChange = function handleChange(e) {
+    console.debug("handle change:", e.target.value);
+    var inputLength = e.target.value.length;
+    setLength(inputLength);
+    onChange(e);
+  };
+  return /*#__PURE__*/React.createElement("form", {
+    onSubmit: onSubmit
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "row mb-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "col-md-10"
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "form-control",
+    id: "searchinput",
+    type: "search",
+    autoComplete: "on",
+    value: searchText,
+    placeholder: "Enter a topic and then click ".concat(Emojis.MAGNIFYING_GLASS),
+    onChange: handleChange
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "col-md-2"
+  }, length <= 0 ? /*#__PURE__*/React.createElement("button", {
+    id: "submitButton",
+    className: "btn btn-primary",
+    type: "submit",
+    disabled: true
+  }, Emojis.MAGNIFYING_GLASS) : /*#__PURE__*/React.createElement("button", {
+    id: "submitButton",
+    className: "btn btn-primary",
+    type: "submit"
+  }, Emojis.MAGNIFYING_GLASS))));
 };

@@ -64,6 +64,7 @@ class PageView extends React.Component {
     const searchInput = document.getElementById("searchinput");
     searchInput.blur();
   };
+  */
 
   handleChangeInSearchInput = (e) => {
     console.debug("handleChangeInSearchInput:", e);
@@ -103,6 +104,23 @@ class PageView extends React.Component {
     });
   };
 
+  handleSubmit = (e) => {
+    // Prevent default form submission behavior
+    e.preventDefault();
+
+    const {searchText} = this.state;
+    const {onSearchRequest} = this.props;
+
+    console.debug("handleSubmit: ", e);
+    console.debug("submitting search text:", searchText);
+    
+    searchText.length && onSearchRequest(searchText);
+
+    this.setState({
+      searchText: ""
+    });
+  }
+
   render() {
     const { dataModel, onRandomPage } = this.props;
     const { searchText } = this.state;
@@ -132,4 +150,4 @@ class PageView extends React.Component {
       </div>
     );
   }
-}
+};

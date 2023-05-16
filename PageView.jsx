@@ -64,7 +64,6 @@ class PageView extends React.Component {
     const searchInput = document.getElementById("searchinput");
     searchInput.blur();
   };
-  */
 
   handleChangeInSearchInput = (e) => {
     console.debug("handleChangeInSearchInput:", e);

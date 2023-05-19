@@ -119,9 +119,9 @@ class PageView extends React.Component {
         <SearchInputForm searchText={searchText} onSubmit={this.handleSubmit} onChange={this.handleChangeInSearchInput} />
 
         <div id="message" className="mb-4 text-white">
-          <TopicButton name={Emojis.REPEATABLE} onClick={this.handleRefreshTopics} />
+          <TopicButton name={Emojis.REPEATABLE} title="Refresh Topics" onClick={this.handleRefreshTopics} />
           {buttons}
-          <TopicButton name={Emojis.RED_QUESTION_MARK} onClick={onRandomPage} />
+          <TopicButton name={Emojis.RED_QUESTION_MARK} title="Random Page" onClick={onRandomPage} />
         </div>
         <div id="results">
           <Summary pages={this.props.dataModel} />

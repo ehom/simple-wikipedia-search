@@ -133,9 +133,11 @@ var PageView = /*#__PURE__*/function (_React$Component) {
         className: "mb-4 text-white"
       }, /*#__PURE__*/React.createElement(TopicButton, {
         name: Emojis.REPEATABLE,
+        title: "Refresh Topics",
         onClick: this.handleRefreshTopics
       }), buttons, /*#__PURE__*/React.createElement(TopicButton, {
         name: Emojis.RED_QUESTION_MARK,
+        title: "Random Page",
         onClick: onRandomPage
       })), /*#__PURE__*/React.createElement("div", {
         id: "results"

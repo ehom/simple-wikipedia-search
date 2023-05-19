@@ -1,0 +1,29 @@
+body {
+  opacity: .85;
+  background-image: url('../images/library.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+input {
+  text-align: center;
+}
+
+.resultBox {
+  background: white;
+  border-color: black;
+}
+
+div.card:hover {
+  border-left-width: 5px;
+  border-left-color: CornFlowerBlue;
+  transition: .5s;
+}
+
+div.card {
+  border-left-width: 3px;
+}
+
+.header-text-color {
+  color: Bisque;
+}

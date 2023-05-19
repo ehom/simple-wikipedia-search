@@ -86,18 +86,6 @@ var PageView = /*#__PURE__*/function (_React$Component) {
         searchText: ""
       });
     });
-    _defineProperty(_assertThisInitialized(_this), "handleSubmit", function (e) {
-      // Prevent default form submission behavior
-      e.preventDefault();
-      var searchText = _this.state.searchText;
-      var onSearchRequest = _this.props.onSearchRequest;
-      console.debug("handleSubmit: ", e);
-      console.debug("submitting search text:", searchText);
-      searchText.length && onSearchRequest(searchText);
-      _this.setState({
-        searchText: ""
-      });
-    });
     var dataModel = props.dataModel,
       topics = props.topics,
       _onSearchRequest = props.onSearchRequest,
